@@ -6,8 +6,7 @@ import './App.css';
 const web3 = new Web3(Web3.givenProvider);
 const contractAddress = "0x3cd9Dd68F6B86586970Fd9a25999b5fC7832F0d5" // pulled from abi.js from the 'address' field
 const storageContract = new web3.eth.Contract(simpleStorage, contractAddress);
-console.log(web3)
-console.log(storageContract)
+
 function App() {
   const [accountAddress, setAccountAddress] = useState(null);
   const [accountBalance, setAccountBalance] = useState('0')
@@ -16,8 +15,6 @@ function App() {
 
   const numberSet = async(t) => {
     t.preventDefault();
-    // const accounts = await window.ethereum.enable(); // calling connected address via MetaMask
-    // const account = accounts[0]; 
     const gas = await storageContract.methods.set(number).estimateGas();
     console.log(`gas:${gas}`)
     const post = await storageContract.methods.set(number).send({
@@ -38,8 +35,8 @@ function App() {
 
   useEffect(() => {
     async function fetchAccountInfo() {
-      // const accounts = await window.ethereum.enable(); 
-      const accounts = await web3.eth.getAccounts()
+      const accounts = await window.ethereum.enable(); // this opens up metamask 
+      // const accounts = await web3.eth.getAccounts()
       const account = accounts[0]; 
       const accountBalance = await web3.eth.getBalance(account);
 
